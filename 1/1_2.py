@@ -17,9 +17,13 @@ for i in range(0,30):
 	err_ind = np.nonzero(randvar < x[i]) #checking probability condition
 	err_n = np.size(err_ind) #computing the probability
 	err.append(err_n/simlen) #storing the probability values in a list
+r i in range(len(x)):
+    c=q(-x[i])
+    err2.append(c)	
 
 	
-plt.plot(x.T,err)#plotting the CDF
+plt.plot(x.T,err'o')#plotting the CDF
+plt.plot(x.T,err2)
 plt.grid() #creating the grid
 plt.xlabel('$x$')
 plt.ylabel('$F_X(x)$')
