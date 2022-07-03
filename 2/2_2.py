@@ -1,34 +1,49 @@
-
-#
 #Importing numpy, scipy, mpmath and pyplot
 import numpy as np
 import matplotlib.pyplot as plt
-import math
+import mpmath as mp
+import scipy
 
-def q(x):
-    return(math.erfc(x/math.sqrt(2)))/2.0
-     
+#if using termux
+#import subprocess
+#import shlex
+#end if
 
-x = np.linspace(-4,4,30)#points on the x axis
+def q_func(x):
+    return mp.erfc(x/np.sqrt(2))/2
+
+ 
+maxrange=50
+maxlim=4.0
+x = np.linspace(-maxlim,maxlim,maxrange)#points on the x axis
 simlen = int(1e6) #number of samples
 err = [] #declaring probability list
-err2=[]
 #randvar = np.random.normal(0,1,simlen)
+#randvar = np.loadtxt('uni.dat',dtype='double')
 randvar = np.loadtxt('gau.dat',dtype='double')
+#randvar = np.loadtxt('ln.dat',dtype='double')
 
-#randvar = np.loadtxt('gau.dat',dtype='double')
-for i in range(0,30):
-	err_ind = np.nonzero(randvar < x[i]) #checking probability condition
-	err_n = np.size(err_ind) #computing the probability
-	err.append(err_n/simlen) #storing the probability values in a list
-for i in range(len(x)):
-    c=q(-x[i])
-    err2.append(c)
-plt.plot(x.T,err,'o')	
-plt.plot(x.T,err2)#plotting the CDF
+for i in range(0,maxrange):
+    err_ind = np.nonzero(randvar < x[i]) #checking probability condition
+    err_n = np.size(err_ind) #computing the probability
+    err.append(err_n/simlen) #storing the probability values in a list
+
+vec_gauss_cdf= scipy.vectorize(q_func)
+
+plt.plot(x,err,'o')
+plt.plot(x,1-vec_gauss_cdf(x))#plotting the CDF
 plt.grid() #creating the grid
 plt.xlabel('$x$')
 plt.ylabel('$F_X(x)$')
+plt.legend(["Numerical","Theory"])
 
-
+#if using termux
+#plt.savefig('../figs/uni_cdf.pdf')
+#plt.savefig('../figs/uni_cdf.eps')
+#subprocess.run(shlex.split("termux-open ../figs/uni_cdf.pdf"))
+#if using termux
+#plt.savefig('../figs/gauss_cdf.pdf')
+#plt.savefig('../figs/gauss_cdf.eps')
+#subprocess.run(shlex.split("termux-open ../figs/gauss_cdf.pdf"))
+#else
 plt.show() #opening the plot window
