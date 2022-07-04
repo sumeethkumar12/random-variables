@@ -11,9 +11,10 @@ import scipy
 
 def q_func(x):
     return mp.erfc(x/np.sqrt(2))/2
-
- 
-maxrange=50
+def cdf(x):
+    return 1-q_func(x)
+    
+ maxrange=50
 maxlim=4.0
 x = np.linspace(-maxlim,maxlim,maxrange)#points on the x axis
 simlen = int(1e6) #number of samples
@@ -28,10 +29,10 @@ for i in range(0,maxrange):
     err_n = np.size(err_ind) #computing the probability
     err.append(err_n/simlen) #storing the probability values in a list
 
-vec_gauss_cdf= scipy.vectorize(q_func)
+vec_gauss_cdf= scipy.vectorize(cdf)
 
 plt.plot(x,err,'o')
-plt.plot(x,1-vec_gauss_cdf(x))#plotting the CDF
+plt.plot(x,vec_gauss_cdf(x))#plotting the CDF
 plt.grid() #creating the grid
 plt.xlabel('$x$')
 plt.ylabel('$F_X(x)$')
