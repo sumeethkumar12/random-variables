@@ -4,7 +4,13 @@ import matplotlib.pyplot as plt
 
 
 #end if
-
+def cdf(x):
+    if x<0.0:
+        return 0.0
+    elif x>1.0:
+        return 1.0		
+    else :
+        return x		
 
 
 x = np.linspace(-4,4,30)#points on the x axis
@@ -17,13 +23,11 @@ for i in range(0,30):
 	err_ind = np.nonzero(randvar < x[i]) #checking probability condition
 	err_n = np.size(err_ind) #computing the probability
 	err.append(err_n/simlen) #storing the probability values in a list
-r i in range(len(x)):
-    c=q(-x[i])
-    err2.append(c)	
+uni_cdf=scipy.vectorize(cdf)	
 
 	
 plt.plot(x.T,err'o')#plotting the CDF
-plt.plot(x.T,err2)
+plt.plot(x.T,uni_cdf)
 plt.grid() #creating the grid
 plt.xlabel('$x$')
 plt.ylabel('$F_X(x)$')
