@@ -19,7 +19,7 @@ x = np.linspace(-10,10,50)#points on the x axis
 simlen = int(1e6) #number of samples
 err = [] #declaring probability list
 
-randvar = np.loadtxt('3.dat',dtype='double')
+randvar = np.loadtxt('uni.dat',dtype='double')
 for i in range(len(x)):
 	err_ind = np.nonzero(randvar < x[i]) #checking probability condition
 	err_n = np.size(err_ind) #computing the probability
