@@ -1,20 +1,24 @@
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
 #include "coeffs.h"
 
-int  main(void) //main function begins
-{
- 
-//Uniform random numbers
-uniform("uni.dat", 1000000);
+int main(){
+  FILE* fp;
+  FILE* fp1;
+  double v = 0.0;
+  double u = 0.0;
+  fp = fopen("uni.dat","r");
+  fp1 = fopen("ray.dat","w");
+  while(fscanf(fp,"%lf",&u)!=EOF){
+     v = -2*log(1-u);
+     fprintf(fp1,"%lf\n",v);
+    }
+    fclose(fp);
+    fclose(fp1);
 
-//Gaussian random numbers
-//gaussian("gau.dat", 1000000);
-new_type("uni.dat","gau.dat",1000000);
-//Mean of uniform
-//printf("%lf",mean("uni.dat"));
-return 0;
-}
+   
+   return 0;
 
 
