@@ -447,10 +447,14 @@ repeat the above exercise theoretically.
         \implies \boxed{E(x)=0}
     \end{align}
     \item Variance is given by
-    \begin{align}
-        \text{var}\sbrak{U}=E(U^2)-(E(U))^2\\
-        \implies\boxed{\text{var}\sbrak{U}=\sqrt{2}}
-    \end{align}
+    begin{align*}
+    E[X^2] &= \int_{-\infty}  ^{\infty} x^{2} p(x) dx \\[8pt]
+    &= x\int_{-\infty} ^{\infty} xp(x) dx - \int_{-\infty} ^{\infty} \left(\int xp(x) dx\right)dx\\[8pt]
+    &= \left[-x\frac{1}{\sqrt{2\pi}}e^{\frac{-x^2}{2}}\right]{-\infty} ^{\infty} - \int{-\infty} ^{\infty} -\frac{1}{\sqrt{2\pi}}e^{\frac{-x^2}{2}} dx  \\[8pt]
+    &= 0 - (-1)
+    &= 1
+\end{align*}
+$var(x) = E[x^2] - E[x] = 1 - 0 =1$
 \end{enumerate}
 \section{From Uniform to Other}
 \begin{enumerate}[label=\thesection.\arabic*
@@ -506,5 +510,421 @@ F_V(X) &= F_U(1 - e^{\frac{-X}{2}})
  \end{align}
 %\item
 %Generate the Rayleigh distribution from Uniform. Verify your result through graphical plots.
+ \section{Triangular Distribution}
+\begin{enumerate}[label=\thesection.\arabic*
+,ref=\thesection.\theenumi]
+%
+\item Generate
+	\begin{align}
+		T = U_1+U_2
+	\end{align}
+\solution Download the below code,
+ \begin{lstlisting}
+ wget https://github.com/Charanyash/Random-Numbers-/blob/main/codes/Q4/coeffs.h
+ wget https://github.com/Charanyash/Random-Numbers-/blob/main/codes/Q4/triangular.c
+ \end{lstlisting}
+and run the following command,
+ \begin{lstlisting}
+  cc triangular.c -lm
+  ./a.out
+ \end{lstlisting}
+ You will get required generated random numbers in tri.dat file.		
+\item Find the CDF of $T$.\\
+ \solution Download the below files,
+  \begin{lstlisting}
+   wget https://github.com/Charanyash/Random-Numbers-/blob/main/codes/Q4/tri.dat
+   wget https://github.com/Charanyash/Random-Numbers-/blob/main/codes/Q4/tri_cdf_plot.py
+  \end{lstlisting}
+  Run the following command,
+  \begin{lstlisting}
+   python3 tri_cdf_plot.py
+  \end{lstlisting}
+  \begin{figure}
+   \centering
+   \includegraphics[width=\columnwidth]{Q4/tri_cdf.png}
+   \caption{The CDF of $T$}
+   \label{fig:tri_cdf}
+  \end{figure}
+\item Find the PDF of $T$.\\
+ \solution Download the below files,
+  \begin{lstlisting}
+   wget https://github.com/Charanyash/Random-Numbers-/blob/main/codes/Q4/tri.dat
+   wget https://github.com/Charanyash/Random-Numbers-/blob/main/codes/Q4/tri_pdf_plot.py
+  \end{lstlisting}
+  Run the following command,
+  \begin{lstlisting}
+   python3 tri_pdf_plot.py
+  \end{lstlisting}		
+ \begin{figure}
+  \centering
+  \includegraphics[width=\columnwidth]{Q4/tri_pdf.png}
+  \caption{The PDF of $T$}
+  \label{fig:tri_pdf}
+ \end{figure}
+\item Find the theoretical expressions for the PDF and CDF of $T$.\\
+  \solution Given that,
+   \begin{align}
+           T = U1 + U2 \label{eq 4-1} 
+   \end{align}
+where$ U1, U2 $ are uniform random variables $\in \brak{0,1}$.\\
+ \textbf{Calculation of CDF}
+The CDF of T is defined as,
+   \begin{align}
+            F_{T}\brak{t} &= \pr{T \leq t}
+   \end{align}
+  Now from $\eqref{eq 4-1}$ we can write,
+   \begin{align}
+           F_{T}\brak{t}  &= \pr{U1 + U2 \leq t}
+   \end{align}
+ \textbf{Case -1 :} For $ t> 2$.\\
+  The $\pr{ U1 + U2 \leq t} = 1$, because for every $ U1 = u1$ and $U2 = u2$, $u1 + u2 <2$,
+   \begin{align}
+           \implies F_{T}\brak{t} &= 1 
+   \end{align}
+ \textbf{Case -2 :} For $ t<0$.\\
+  The $\pr{ U1 + U2 \leq t} = 0$ because for every $ U1 = u1$ and $U2 = u2$, $u1 + u2 >0$,
+   \begin{align}
+           \implies F_{T}\brak{t} &= 0 
+   \end{align}
+ \textbf{Case - 3:} For, $ t \in \brak{0,2} $.\\
+  We cannot eliminate the inequality like we did before, so in this case we will operate the inequality by fixing $U1 = x$ where $x\in \brak{0,t} $. So in this case CDF will be,
+   \begin{align}
+           F_{T}\brak{t}  &= \pr{U1 + U2 \leq t}\\
+                          &= \pr{U1 = x,U2 \leq t-x}\\
+                          &= \pr{U1 = x}\pr{U2 \leq t-x}  
+   \end{align}
+ Since U1,U2 are i.i.d.\\
+  Now note that $ x$ is a variable and varies in $\brak{0,t}$ , so we have to take integral over x to evaluate the $\pr{U1=x}$ ,
+   \begin{align}
+           F_{T}\brak{t} &= \int_{0}^{t} f_{U}\brak{x}\pr{U2 \leq t-x} dx\\
+                         & =\int_{0}^{t} f_{U}\brak{x}F_{U}\brak{t-x} dx
+   \end{align}
+\textbf{Case - 1} For $ t \in \brak{0,1} $,we know $f_{U}\brak{x} = 1$ so,
+  \begin{align}
+          F_{T}\brak{t} &= \int_{0}^{t}1.F_{U}\brak{t-x}dx
+  \end{align}
+        As, $x<t$ , $ 0<t-x< t<1$ using \eqref{cdf_U},we can write
+  \begin{align}
+         F_{T}\brak{t} &= \int_{0}^{t}\brak{t-x}dx\\
+                       &= \cbrak{ tx - \frac{x^2}{2}}_{0}^{t}\\
+                       &= \frac{t^{2}}{2}
+  \end{align}
+ \textbf{Case -2} For $ t \in \brak{1,2}$ , we know $f_{U}\brak{x} = 0$ at $ x > 1$ ,so the integral solves down to,
+  \begin{align}
+          F_{T}\brak{t} &= \int_{0}^{1}f_{U}\brak{x}F_{U}\brak{t-x}dx\\
+                        &= \int_{0}^{1}1.F_{U}\brak{t-x}dx\\
+  \end{align}
+   To solve the above integral we will use integration by substitution,
+   \begin{align}
+            k &= t-x\\
+           dk &= -dx\\
+           F_{T}\brak{t} &= \int_{t}^{t-1}F_{U}\brak{k}\brak{-dk}\\
+                         &= \int_{t-1}^{t}F_{U}\brak{k}dk
+   \end{align}
+   As $ 1 \leq t \leq 2 , 0 \leq t-1 \leq 1 $ we will break integral at 1 because $ F_{U}\brak{k}$ changes at 1.Using \eqref{cdf_U},
+   \begin{align}
+           F_{T}\brak{t}  &= \int_{t-1}^{1}F_{U}\brak{k}dk + \int_{1}^{t}F_{U}\brak{k}dk \\
+                          &= \int_{t-1}^{1}kdk + \int_{1}^{t}1dk\\
+                          &= \cbrak{\frac{k^{2}}{2}}_{t-1}^{1} + t - 1\\
+                          &= \frac{1}{2} -\brak{\frac{\brak{t-1}^{2}}{2}} + t - 1\\
+                          &= 2t - \frac{t^{2}}{2} - 1
+   \end{align}
+   Overall we can write the CDF of $F_{T}\brak{x}$ as,
+   \begin{align}
+           F_{T}\brak{x} &=   \begin{cases}
+                                   0                      &,   x <0\\
+                                \frac{x^{2}}{2}           &, 0\leq x \leq 1\\
+                                2t - \frac{t^{2}}{2} - 1  &, 1 \leq x \leq 2\\
+                                   1                      &,   x > 2
+                              \end{cases}
+    \end{align}      
+ \textbf{Calculation of PDF}                
+ Now we will find PDF of $T$,\\
+ As,
+   \begin{align}
+           T &= U1 + U2
+   \end{align}
+  We will use method of convolution to get PDF of $T$ as $ U1$ and $U2$ are i.i.d.
+   \begin{align}
+          f_{T}\brak{t} &= \int_{-\infty}^{\infty}f_{U1}\brak{x}f_{U2}\brak{t-x}dx
+   \end{align}
+  Since $ U1,U2$ are of same distribution we can write,
+   \begin{align}
+           f_{U1}\brak{x} &= f_{U2}\brak{x} = f_{U}\brak{x}\\
+           \implies f_{T}\brak{t} &= \int_{-\infty}^{\infty}f_{U}\brak{x}f_{U}\brak{t-x}dx
+   \end{align}
+ From the PDF of U,we can write
+  \begin{align}
+          f_{T}\brak{t} &= \int_{0}^{1}f_{U}\brak{x}f_{U}\brak{t-x}dx\\
+                        &= \int_{0}^{1}1.f_{U}\brak{t-x}dx\\
+  \end{align}
+  we will solve the above integral using substitution.
+  \begin{align}
+            z &= t-x \\
+           dz &= -dx \\
+          \implies f_{T}\brak{t} &= \int_{t}^{t-1}f_{U}\brak{z}\brak{-dz}\\
+                                 &= \int_{t-1}^{t}f_{U}\brak{z}dz
+  \end{align}
+ \textbf{Case -1} For $ t<0 $ as $ z <t $,the PDF $ f_{U}\brak{z} = 0 $. So,
+  \begin{align}
+          f_{T}\brak{t} &= 0
+  \end{align}
+ \textbf{Case -2} For $ 0 \leq t \leq 1$, we will break the integral at $z = 0$, since $f_{U}\brak{z}$ changes at 0.
+  \begin{align}
+          f_{T}\brak{t} &= \int_{t-1}^{0}f_{U}\brak{z}dz + \int_{0}^{t}f_{U}\brak{z}dz\\
+                        &= 0 + \int_{0}^{t}1dz \\
+                        &= t
+  \end{align}
+ \textbf{Case-3} Similarly for $ 1 \leq t \leq 2$, we will break the integral at $ z = 1 $,
+  \begin{align}
+          f_{T}\brak{t} &= \int_{t-1}^{1}f_{U}\brak{z}dz + \int_{1}^{t}f_{U}\brak{z}\\
+                        &= \int_{t-1}^{1}1.dz + 0\\
+                        &=  2 - t
+  \end{align}
+   \textbf{Case-4} For $ t>2$,as $ z > t - 1  > 1$,the PDF $f_{U}\brak{z} = 0 $. So,
+   \begin{align}
+           f_{T}\brak{z} &= 0
+   \end{align}
+  Overall, the PDF of T will be,
+   \begin{align}
+           f_{T}\brak{x} &=  \begin{cases}
+                                     0     &, x <0 \\
+                                     x     &, 0 \leq x \leq 1\\
+                                    2-x    &, 1 \leq x \leq 2 \\
+                                     0     &, x > 2
+                             \end{cases}
+   \end{align}
+\item Verify your results through a plot.\\
+  \solution This is already done in \ref{fig:tri_cdf} ,\ref{fig:tri_pdf}.
+\end{enumerate}
+\section{Maximum Likelihood}
+\begin{enumerate}[label=\thesection.\arabic*
+,ref=\thesection.\theenumi]
+\item Generate equiprobable $X \in \cbrak{1,-1}$.\\	
+  \solution The generating X or bernoulie random variable $ \brak{X}$ is done by using uni.dat file. Download the below files
+    \begin{lstlisting}
+         wget https://github.com/Charanyash/Random-Numbers-/blob/main/codes/Q5/coeffs.h
+	 wget https://github.com/Charanyash/Random-Numbers-/blob/main/codes/Q5/bernoulie.c
+    \end{lstlisting}
+  Run the following command
+    \begin{lstlisting}
+	  cc bernoulie.c -lm
+	  ./a.out 
+    \end{lstlisting} 
+\item Generate
+\begin{equation}
+Y = AX+N,
+\end{equation}
+	where $A = 5$ dB,  and $N \sim \gauss{0}{1}$.\\
+  \solution To generate distribution of Y random variable we will need previously generated bernoulie distribution and gaussian distribution.Download the below files
+    \begin{lstlisting}
+     wget  https://github.com/Charanyash/Random-Numbers-/blob/main/codes/Q5/coeffs.h
+     wget https://github.com/Charanyash/Random-Numbers-/blob/main/codes/Q5/Y.c
+    \end{lstlisting}
+   Then run the following command,
+    \begin{lstlisting}
+     cc Y.c -lm
+     ./a.out
+    \end{lstlisting}
+\item Plot $Y$ using a scatter plot.\\
+ \solution Download the below files
+    \begin{lstlisting}
+      wget https://github.com/Charanyash/Random-Numbers-/blob/main/codes/Q5/Y.py
+      wget https://github.com/Charanyash/Random-Numbers-/blob/main/codes/Q5/Y.dat
+    \end{lstlisting}
+   Then run the following command,
+    \begin{lstlisting}
+      python3 Y.py
+    \end{lstlisting}		
+\item Guess how to estimate $X$ from $Y$.
+	\solution When $ Y > 0 $, we can more probably say that $X = 1$ as $X$ can take values from $\sbrak{-1,1}$.As $A$ increases the signal contribution will increase compared to noise.The scatter plot will not be intermixed as $A$ increases. So in this case, the scatter plot of $Y$ is seperated with decision boundary as $0$. So we can more probably say that,
+	  \begin{align}
+		  X &= \begin{cases}
+			  1 &, Y>0\\
+			 -1 &, Y<0 
+		       \end{cases}
+          \end{align}		       
+\item
+\label{ml-ch4_sim}
+Find
+\begin{equation}
+	P_{e|0} = \pr{\hat{X} = -1|X=1}
+\end{equation}
+and
+\begin{equation}
+	P_{e|1} = \pr{\hat{X} = 1|X=-1}
+\end{equation}
+%
+\solution The $\hat{X}$ is defined as,
+  \begin{align}
+      \hat{X} &= \begin{cases}
+	             1  &, Y > 0\\
+		         0  &, Y\leq 0
+		         \end{cases}
+  \end{align}
+ The error probability, when the actual signal is $X=1$ but transmitted as $\hat{X} = -1$ is,
+  \begin{align}
+	  P_{e|0} &= \pr{\hat{X} = -1|X=1}\\
+	          &= \pr{ Y \leq 0| X= 1}\\
+		  &= \pr{AX + N \leq 0 | X=1}\\
+		  &= \pr{ A + N \leq 0}\\
+		  &= \pr{N \leq -A}\\
+		  &= F_{N}\brak{-A}\\
+		  &= 0 \label{eq-5.5.1}
+  \end{align}
+ And for the case when actual signal is $X=-1$ but transmitted as $\hat{X} = 1$ the error probability will be,
+  \begin{align}
+	  P_{e|1} &= \pr{\hat{X} = 1|X=-1}\\
+                  &= \pr{ Y > 0| X=-1}\\
+                  &= \pr{AX + N > 0 | X=1}\\
+                  &= \pr{ N-A > 0}\\
+                  &= \pr{N > A}\\
+		  &= 1 - F_{N}\brak{A}\\
+		  &= F_{N}\brak{-A}\\
+		  &= 0 \label{eq-5.5.2}
+  \end{align}
+The above calculations are coded in below python file,
+  \begin{lstlisting}
+    wget  https://github.com/Charanyash/Random-Numbers-/tree/main/codes/Q5/5.5.py
+  \end{lstlisting}
+  Run the following command
+  \begin{lstlisting}
+   python3 5.5.py
+  \end{lstlisting}
+\item Find $P_e$ assuming that $X$ has equiprobable symbols.
+%
+\item
+Verify by plotting  the theoretical $P_e$ with respect to $A$ from 0 to 10 dB.
+%
+\item Now, consider a threshold $\delta$  while estimating $X$ from $Y$. Find the value of $\delta$ that maximizes the theoretical $P_e$.
+\item Repeat the above exercise when
+	\begin{align}
+		p_{X}(0) = p
+	\end{align}
+\item Repeat the above exercise using the MAP criterion.
+		\end{enumerate}
+\section{Gaussian to Other}
+\begin{enumerate}[label=\thesection.\arabic*
+,ref=\thesection.\theenumi]
+\item
+Let $X_1 \sim  \gauss{0}{1}$ and $X_2 \sim  \gauss{0}{1}$. Plot the CDF and PDF of
+%
+\begin{equation}
+V = X_1^2 + X_2^2
+\end{equation}
+%
+%
+%
+\item
+If
+%
+\begin{equation}
+F_{V}(x) =
+\begin{cases}
+1 - e^{-\alpha x} & x \geq 0 \\
+0 & x < 0,
+\end{cases}
+\end{equation}
+%
+find $\alpha$.
+%
+\item
+\label{ch3_raleigh_sim}
+Plot the CDF and PDf of
+%
+\begin{equation}
+A = \sqrt{V}
+\end{equation}
+%
+\end{enumerate}
+\section{Conditional Probability}
+\begin{enumerate}[label=\thesection.\arabic*
+,ref=\thesection.\theenumi]
+\item
+\label{ch4_sim}
+Plot
+\begin{equation}
+P_e = \pr{\hat{X} = -1|X=1}
+\end{equation}
+%
+for
+\begin{equation}
+Y = AX+N,
+\end{equation}
+where $A$ is Raleigh with $E\sbrak{A^2} = \gamma, N \sim \gauss{0}{1}, X \in \brak{-1,1}$ for $0 \le \gamma \le 10$ dB.
+%
+\item
+Assuming that $N$ is a constant, find an expression for $P_e$.  Call this $P_e(N)$
+%
+\item
+%
+\label{ch4_anal}
+For a function $g$,
+\begin{equation}
+E\sbrak{g(X)} = \int_{-\infty}^{\infty}g(x)p_{X}(x)\, dx
+\end{equation}
+%
+Find $P_e = E\sbrak{P_e(N)}$.
+%
+\item
+Plot $P_e$ in problems \ref{ch4_sim} and \ref{ch4_anal} on the same graph w.r.t $\gamma$.  Comment.
+		\end{enumerate}
+\section{Two Dimensions}
+Let
+\begin{equation}
+\mbf{y} = A\mbf{x} + \mbf{n},
+\end{equation}
+where
+\begin{align}
+x &\in \brak{\mbf{s}_0,\mbf{s}_1},
+\mbf{s}_0 =
+\begin{pmatrix}
+1
+\\
+0
+\end{pmatrix},
+\mbf{s}_1 =
+\begin{pmatrix}
+0
+\\
+1
+\end{pmatrix}
+\\
+\mbf{n} &=
+\begin{pmatrix}
+n_1
+\\
+n_2
+\end{pmatrix},
+n_1,n_2 \sim \gauss{0}{1}.
+\end{align}
+%
+\begin{enumerate}[label=\thesection.\arabic*
+,ref=\thesection.\theenumi]
+%%
+\item
+\label{ch5_fsk}
+Plot
+%
+\begin{equation}
+\mbf{y}|\mbf{s}_0 \text{ and } \mbf{y}|\mbf{s}_1
+\end{equation}
+%
+on the same graph using a scatter plot.
+%
+\item
+For the above problem, find a decision rule for detecting the symbols $\mbf{s}_0 $ and $\mbf{s}_1$.
+%
+\item
+Plot
+\begin{equation}
+P_e = \pr{\hat{\mbf{x}} = \mbf{s}_1|\mbf{x} = \mbf{s}_0}
+\end{equation}
+with respect to the SNR from 0 to 10 dB.
+%
+\item
+Obtain an expression for $P_e$. Verify this by comparing the theory and simulation plots on the same graph.
+%
+		\end{enumerate}
 \end{enumerate}
 \end{document}
